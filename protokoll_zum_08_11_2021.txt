@@ -1,0 +1,11 @@
+\documentclass[]{article}
+\usepackage[utf8]{inputenc}
+\title{Protokoll zur Trendschätzung DAS-Monitoring}
+\author{}
+\date{\today}
+\vspace*{1in}
+\begin{document}
+\maketitle
+Das vorliegende Dokument hält die Projektanforderungen zur Trendschätzung DAS-Monitoring, basierend auf einem gemeinsamen Treffen am 08. November 2021 fest. Das Projekt gestalten Sven Morlock, Tina Drazevic, Tim Bauroth und Xinyang Chen. Betreuer sind Herr Prof. Helmut Küchenhoff und Sevag Kevork. Kooperationspartner ist Bosch \& Partner, vertreten durch Frau Schönthaler und Herr von Andrian.\newline
+
+\end{document}
