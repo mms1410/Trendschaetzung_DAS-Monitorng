@@ -3,9 +3,17 @@
 \title{Protokoll zur Trendschätzung DAS-Monitoring}
 \author{}
 \date{\today}
-\vspace*{1in}
+%\vspace*{1in}
 \begin{document}
 \maketitle
-Das vorliegende Dokument hält die Projektanforderungen zur Trendschätzung DAS-Monitoring, basierend auf einem gemeinsamen Treffen am 08. November 2021 fest. Das Projekt gestalten Sven Morlock, Tina Drazevic, Tim Bauroth und Xinyang Chen. Betreuer sind Herr Prof. Helmut Küchenhoff und Sevag Kevork. Kooperationspartner ist Bosch \& Partner, vertreten durch Frau Schönthaler und Herr von Andrian.\newline
+Das vorliegende Dokument hält die Projektanforderungen zur Trendschätzung DAS-Monitoring, basierend auf einem gemeinsamen Treffen am 08. 
+November 2021 fest. Das Projekt gestalten Sven \mbox{Morlock}, Tina \mbox{Drazevic}, Tim \mbox{Bauroth} und \mbox{Xinyang} Chen. 
+Betreuer sind Herr Prof. Helmut Küchenhoff und \mbox{Sevag Kevork}. Kooperationspartner ist \mbox{Bosch \& Partner}, 
+vertreten durch Frau Schönthaler und Herr von Andrian. Die Teilnehmer haben sich dabei auf folgende Punkte verständigt: \newline
+Das Projekt wird in der Programmiersprache R implementiert bestehend aus einer oder mehreren .R Dateien.
+Die zu verarbeitenden Daten liegen in .xlsx Dateien vor und werden im Rahme des data preprocessing, welches der eigentlichen statistischen Analyse vorrausgeht , automatiesiert eingelesen und basierend auf Eigenschaften des jeweiligen Datensatzes entrprechenden statistischen Modellen in der anschließenden statistischen Analyse zugeordnet.
+In der statistischen Analyse soll zum einen darauf eingegangen werden, in wie weit Trends zu welchen Signifikanzniveaus vorliegen und zum anderen sollen 
+Möglichkeiten zur Trendmodellierung aufgezeigt werden, die dem Umstand Rechnung tragen, dass die zugrundeliegnden Daten hohe Varianz haben und  Extreme Werte aufweisen.
+
 
 \end{document}
