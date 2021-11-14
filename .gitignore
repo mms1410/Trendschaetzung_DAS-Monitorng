@@ -1,4 +1,7 @@
 *.pdf
 *.aux
 *.log
-
+*.xlsx
+*.xlx
+data/
+daten/

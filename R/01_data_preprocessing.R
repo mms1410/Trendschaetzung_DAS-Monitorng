@@ -1,8 +1,9 @@
 ## Preliminaries
 library(readxl)
 library(checkmate)
+library(utils)
 ## Read data and create data variables
-folderpath <- "~/03_data/06_Trendschaetzung_DAS-Monitoring/" # TO CHANGE #
+folderpath <- choose.dir()
 filenames <- list.files(folderpath) # relative path
 for (filename in filenames){
   assertCharacter(filename) # ToDo: check pattern ?
