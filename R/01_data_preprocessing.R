@@ -1,6 +1,5 @@
 ## Preliminaries
 library(readxl)
-library(checkmate)
 ## Read data and create data variables
 path_data <- dirname(rstudioapi::getSourceEditorContext()$path)
 path_data <- dirname(path_data) # folder down from 'R' folder
@@ -13,7 +12,16 @@ for (filename in filenames){
   pattern <- pattern <- "(?:(?!_Daten).)*" # neg look ahead needed
   varname <- regmatches(filename, gregexpr(pattern = pattern,
                                                 filename, perl = TRUE))[[1]][1]
-  assign(varname, read_excel(paste0(path_data,.Platform$file.sep, filename))) # absolute path
-  # ToDo:
-  # clean data
+  tmp_path <- paste0(path_data,.Platform$file.sep, filename)
+  tmp_colnames <- read_excel(tmp_path,
+                             na = c("NA", "<NA>"),
+                             skip = 3,
+                             n_max = 1)
+  tmp_colnames <- c("count","Jahr", colnames(tmp_colnames))
+  assign(varname, read_excel(tmp_path, # absolute path
+                             na = c("NA", "<NA>"),
+                             skip = 5,
+                             col_types = "numeric",
+                             col_names = tmp_colnames)
+                             )
 }
