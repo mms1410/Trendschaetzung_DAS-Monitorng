@@ -79,9 +79,9 @@ for (tmp_filename in tmp_tmp_filenames){
     tmp_spreadsheet_title <- as.character(tmp_spreadsheet_title[1,1])
     tmp_colnames <- c(tmp_spreadsheet_title, tmp_colnames)
   }
-  if( tmp_comment_col != ""){
-    tmp_colnames <- c(tmp_colnames, tmp_comment_col)
-  }
+  #if( tmp_comment_col != ""){
+  #  tmp_colnames <- c(tmp_colnames, tmp_comment_col)
+  #}
   # read 'real' data
   tmp_data <- read_excel(tmp_path, # absolute path
                          na = c("NA", "<NA>"),
