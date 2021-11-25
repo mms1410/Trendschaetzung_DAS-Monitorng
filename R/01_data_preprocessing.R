@@ -1,9 +1,9 @@
 ## Preliminaries
 library(tidyverse)
 library(readxl)
+library(data.table)
 ### below for other approach
 #library(tidyxl)
-#library(data.table)
 ## Read data and create data variables
 tmp_path_data <- dirname(rstudioapi::getSourceEditorContext()$path)
 tmp_path_data <- dirname(tmp_path_data) # folder down from 'R' folder
@@ -79,7 +79,7 @@ for (tmp_filename in tmp_tmp_filenames){
     tmp_spreadsheet_title <- as.character(tmp_spreadsheet_title[1,1])
     tmp_colnames <- c(tmp_spreadsheet_title, tmp_colnames)
   }
-  #if( tmp_comment_col != ""){
+  #if( tmp_comment_col != ""){frm_exam
   #  tmp_colnames <- c(tmp_colnames, tmp_comment_col)
   #}
   # read 'real' data
@@ -157,3 +157,5 @@ for (tmp_filename in tmp_tmp_filenames){
   #   tmp_data <-  dcast(tmp_data, formula = Jahr ~ name, value.var = "numeric")
   assign(tmp_varname, tmp_data)
 }
+# remove tmp variables not used any more
+# rm( list = ls()[grep(x = ls(), pattern = "^tmp")])
