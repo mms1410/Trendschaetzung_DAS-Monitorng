@@ -13,6 +13,6 @@ Arbeit im Rahmen des Statistischen Praktikums an der LMU Muenchen
 ## Ideas:
 - Daten als xts object
 - Meta daten sheet fuer Zuordnung Mess-/Zähldaten das in 01 script benutzt wird?
-- 
+- dependencies fuer packages ? 
 
 
