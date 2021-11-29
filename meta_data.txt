@@ -1,203 +1,203 @@
 #####################LW-R-3_Daten_Sortenspektrum_2019.xlsx####################
 
-48 Beobachtungen
+48 Beobachtungen check
 
 ######################FW-I-7_Daten_Waldzustand_2019.xlsx######################
 
-27 Beobachtungen
+27 Beobachtungen check
 
 ######################FW-R-6_Daten_Information_2019.xlsx######################
 
-18 Beobachtungen
+18 Beobachtungen check
 
 #################LW-R-1_Daten_Bewirtschaftsrhythmen_2019.xlsx#################
 
-48 Beobachtungen
+48 Beobachtungen check
 
 ##############BD-I-3_Daten_Rueckgewinnung_Ueberflutung_2019.xlsx##############
 
-18 Beobachtungen
+18 Beobachtungen check
 
 ###############TOU-I-6_Daten_Saisonale_Uebernachtungszahlen.xlsx##############
 
-13 Beobachtungen
+13 Beobachtungen check
 
 ################EW-R-1_Daten_Elektrizitaetserzeugung_2019.xlsx################
 
-28 Beobachtungen
+28 Beobachtungen check
 
 ###########RO-R-4_Daten_Vorrang_Vorbehalt_Klimafunktionen_2019.xlsx###########
 
-9 Beobachtungen
+9 Beobachtungen check
 
 #########BAU-R-2_Daten_Waermeenergieverbrauch_priv_Haushalte_BuP.xlsx#########
 
-18 Beobachtungen
+18 Beobachtungen check
 
 ################LW-R-2_Daten_Waermeliebende_Kulturen_2019.xlsx################
 
-27 Beobachtungen
+27 Beobachtungen check
 
 #####################WW-I-10_Daten_Meeresspiegel_2019.xlsx####################
 
-174 Beobachtugen
+174 Beobachtugen check
 
 ###########RO-R-3_Daten_Vorrang_Vorbehalt_Hochwasserschutz_2019.xlsx##########
 
-9 Beobachtungen
+9 Beobachtungen check
 
 ###########EW-R-2_Daten_Endenergieverbrauch_Waerme_Kaelte_2019.xlsx###########
 
-23 Beobachtungen
+23 Beobachtungen check
 
 ########################GE-I-3_Daten_Ambrosia_2019.xlsx#######################
 
-12 Beobachtungen
+12 Beobachtungen check
 
 #################WW-I-9_Daten_Wassertemperatur_Meer_2019.xlsx#################
 
-49 Beobachtungen
+49 Beobachtungen check
 
 ########IG-R-1_Daten_Wasserintensitaet_Verarbeitendes_Gewerbe_2019.xlsx#######
 
-26 Beobachtungen
+26 Beobachtungen check
 
 ####################GE-R-2_Daten_Hitzemassnahmen_2019.xlsx####################
 
-9 Beobachtungen
+9 Beobachtungen check
 
 ####################LW-I-1_Daten_Agrophaenologie_2019.xlsx####################
 
-48 Beobachtungen
+48 Beobachtungen check
 
 #####################LW-R-5_Daten_PSM_Anwendung_2019.xlsx#####################
 
-27 Beobachtungen
+27 Beobachtungen check
 
 #############FW-I-6_Daten_Waldbrand_Waldbrandgefaehrdung_2019.xlsx############
 
-41 Boebachtungen
+41 Boebachtungen check
 
 ####################EW-I-1_Daten_Unterbrechungen_2019.xlsx####################
 
-12 Beobachtungen
+12 Beobachtungen check
 
 ################TOU-I-2_Daten_Uebernachtungen_Kueste_2019.xlsx################
 
-11 Beobachtungen
+11 Beobachtungen check
 
 ########HUE-3_Daten_Zuwendungen_Forschungsprojekte_2019_ohne_Daten.xlsx#######
 
-28 Beobachtungen
+28 Beobachtungen check
 
 ####################BAU-R-3_Daten_Foerderung_kfw_2019.xlsx####################
 
-12 Beobachtungen
+12 Beobachtungen check
 
 #######################BO-I-X_Daten_Bodentemperatur.xlsx######################
 
-67 Beobachtungen
+67 Beobachtungen FAIL (63)
 
 #################TOU-I-7_Daten_Praeferenz_Reiseziele_2019.xlsx################
 
-21 Beobachtungen
+21 Beobachtungen check
 
 ####################EW-R-3_Daten_Stromspeicherung_2019.xlsx###################
 
-7 Beobachtungen
+7 Beobachtungen check
 
 ########################BS-R-3_Daten_Uebungen_2019.xlsx#######################
 
-13 Beobachtungen
+13 Beobachtungen check
 
 ###########RO-R-1_Daten_Vorrang_Vorbehalt_Natur-Landschaft_2019.xlsx##########
 
-8 Beobachtungen
+8 Beobachtungen FAIL (9)
 
 ###################BO-I-1_Daten_Bodenwasservorrat_2019.xlsx###################
 
-48 Beobachtungen
+48 Beobachtungen check
 
 #############RO-R-2_Daten_Vorrang_Vorbehalt_Trinkwasser_2019.xlsx#############
 
-9 Beobachtungen
+9 Beobachtungen check
 
 ##################FW-I-4_Daten_Schadholz_zufNutzung_2019.xlsx#################
 
-27 Beobachtungen
+27 Beobachtungen check
 
 ####################GE-R-1_Daten_Hitzewarndienst_2019.xlsx####################
 
-10 Beobachtungen
+10 Beobachtungen check
 
 #####################BO-R-2_Daten_Dauergruenland_2019.xlsx####################
 
-27 Beobachtungen
+27 Beobachtungen check
 
 ###################FI-I-1_Daten_lusitanische_Arten_2019.xlsx##################
 
-31 Beobachtungen
+31 Beobachtungen check
 
 ####################BAU-I-1_Daten_Waermebelastung_2019.xlsx###################
 
-32 Beobachtungen
+32 Beobachtungen check
 
 ####################EW-R-4_Daten_Wassereffizienz_2019.xlsx####################
 
-27 Beobachtungen
+27 Beobachtungen FAIL (28)
 
 #######################BAU_I-5_Daten_Schadenaufwand.xlsx######################
 
-48 Beobachtungen
+48 Beobachtungen check
 
 ##############FiW-I-1_Daten_Schadenquote_Combined_Ratio_2019.xlsx#############
 
-42 Beobachtungen
+42 Beobachtungen check
 
 ################WW-I-11_Daten_Intensitaet_Sturmfluten_2019.xlsx###############
 
-164 Beobachtungen
+164 Beobachtungen check
 
 ######################BAU-I-2_Daten_Waermeinsel_2019.xlsx#####################
 
-43 Beobachtungen
+43 Beobachtungen check
 
 ############################BAU-R-5_Daten_eEV.xlsx############################
 
-17 Beobachtungen
+17 Beobachtungen check
 
 ##################EW-I-2_Daten_Nichtverfuegbarkeit_2019.xlsx##################
 
-12 Beobachtungen
+12 Beobachtungen check
 
 ###################LW-R-4_Daten_Reifegruppen_Mais_2019.xlsx###################
 
-15 Beobachtungen
+15 Beobachtungen check
 
 #####################GE-I-1_Daten_Hitzebelastung_2019.xlsx####################
 
-48 Beobachtungen
+48 Beobachtungen check
 
 ###############FI-I-2_Daten_Seen_waermeliebende_Arten_2019.xlsx###############
 
-48 Beobachtungen
+48 Beobachtungen check
 
 ##################LW-I-2_Daten_Ertragsschwankungen_2019.xlsx##################
 
-32 Beobachtugen
+32 Beobachtugen check
 
 #####################BD-R-2_Daten_Gebietsschutz_2019.xlsx#####################
 
-16 Beobachtungen
+16 Beobachtungen FAIL (18)
 
 ####################TOU-I-1_Daten_Badetage_Kueste_2019.xlsx###################
 
-29 Beobachtungen
+29 Beobachtungen check
 
 ##############WW-R-3_Daten_Investitionen_Kuestenschutz_2019.xlsx##############
 
-18 Beobachtungen
+18 Beobachtungen check
 
 #################BD-I-2_Daten_Temperaturindex_Voegel_2019.xlsx################
 
-28 Beobachtungen
+28 Beobachtungen check

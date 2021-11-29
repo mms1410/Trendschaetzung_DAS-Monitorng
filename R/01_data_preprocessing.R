@@ -66,10 +66,10 @@ for (tmp_filename in tmp_tmp_filenames){
   tmp_colnames <- read_excel(tmp_path,skip = tmp_row - 3, n_max = 3,
                              col_names = FALSE)
   # paste all strings in column to one common header
-  paste_char_col <- function(column){
+  tmp_paste_char_col <- function(column){
     paste0(t(na.omit(column)), collapse = " ")
   }
-  tmp_colnames <- apply(tmp_colnames, MARGIN = 2, FUN = paste_char_col)
+  tmp_colnames <- apply(tmp_colnames, MARGIN = 2, FUN = tmp_paste_char_col)
   # determine spreadsheet title in cell 1,1
   # if first row contains only NA, the column names must be adjusted
   if(!all(is.na(tmp_data[,1]))){
@@ -158,4 +158,4 @@ for (tmp_filename in tmp_tmp_filenames){
   assign(tmp_varname, tmp_data)
 }
 # remove tmp variables not used any more
-# rm( list = ls()[grep(x = ls(), pattern = "^tmp")])
+rm( list = ls()[grep(x = ls(), pattern = "^tmp")])
