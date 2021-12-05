@@ -1,0 +1,28 @@
+---
+title: Statistisches Praktikum WiSe21/22, Trendschä̈tzung DAS-Monitorin
+author: Sven Maurice Morlock, Tina Drazevic, Xinyang Chen
+institute: Ludwig-Maximilians-Universität München, Institut für Statistik
+output: 
+  beamer_presentation:
+    theme: "Montpellier"
+    latex_engine: xelatex
+
+---
+
+# Datensatz
+
+## Allgemeines
+
+- 50 Indikatoren
+- Trenschätzung (nichtparametrisch)
+- Trendtest 
+
+# Methoden
+
+## Trendschätzung
+- AR(p) Prozess
+- Extremwerte
+
+## Trendtest
+- Mann-Kendall Trendtest implementiert in package 'Kendall'
+- Verschiedene Signifikanzniveaus
