@@ -10,6 +10,7 @@ tmp_path_data <- dirname(tmp_path_data) # folder down from 'R' folder
 tmp_path_data <- paste0(tmp_path_data, .Platform$file.sep, "data") 
 tmp_tmp_filenames <- list.files(tmp_path_data) # relative path
 tmp_count <- 0
+ts_list = list() # init empty list for list of time series(xts)
 for (tmp_filename in tmp_tmp_filenames){
   tmp_count <- tmp_count + 1
   #tmp_filename <- tmp_tmp_filenames[1]
@@ -93,7 +94,18 @@ for (tmp_filename in tmp_tmp_filenames){
   tmp_data <- as.data.table(tmp_data)
   tmp_data <- tmp_data[rowSums((!is.na(tmp_data))) > 1]
   colnames(tmp_data) <- tmp_colnames
+  # add tmp_data to ts_list with name tmp_varname
   
+  # clean data
+  # eg: BAU_I-5
+  # ts_list = list("HandlungsfeldBauwesen" = list(
+  #                                                 "Stum_und_Hagel" = <xts time series>,
+  #                                                  "Elementarschaeden") 
+  #                            ...
+  #                 " Wasserhaushalt, Wasserwirtschaft, Küsten- und Meeresschutz" = list(
+  #                                                   "Bundwsmittel in Mio €" = <xts time series>,
+  #                                                    "EU Mittel" = <xts time series>)
+  #                )
   ######################## tidyxl /data.table #################################
   # tmp_data <- as.data.table(xlsx_cells(tmp_path, sheets = "Indikator"))
   # tmp_data <- tmp_data[row != 1]
