@@ -1,12 +1,12 @@
 ---
-title: Statistisches Praktikum WiSe21/22, Trendschä̈tzung DAS-Monitorin
-author: Sven Maurice Morlock, Tina Drazevic, Xinyang Chen
+title: Statistisches Praktikum WiSe21/22, Trendschä̈tzung DAS-Monitoring
+author: Sven Maurice Morlock, Tina Drazevic, Xinyang Chen, Tim Baurtoth
 institute: Ludwig-Maximilians-Universität München, Institut für Statistik
+date: "`r format(Sys.Date(), '%d %B %Y')`"
 output: 
   beamer_presentation:
     theme: "Montpellier"
     latex_engine: xelatex
-
 ---
 
 # Datensatz
@@ -22,6 +22,10 @@ output:
 ## Trendschätzung
 - AR(p) Prozess
 - Extremwerte
+
+## Trendschätzung
+- Bayesian Splines
+- Homoskedastische Varianzstruktur
 
 ## Trendtest
 - Mann-Kendall Trendtest implementiert in package 'Kendall'
