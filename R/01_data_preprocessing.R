@@ -2,12 +2,13 @@
 library(tidyverse)
 library(readxl)
 library(data.table)
+library(xts)
 ### below for other approach
 #library(tidyxl)
 ## Read data and create data variables
 tmp_path_data <- dirname(rstudioapi::getSourceEditorContext()$path)
 tmp_path_data <- dirname(tmp_path_data) # folder down from 'R' folder
-tmp_path_data <- paste0(tmp_path_data, .Platform$file.sep, "data") 
+tmp_path_data <- paste0(tmp_path_data, .Platform$file.sep, "data") # folder up to 'data' folder 
 tmp_tmp_filenames <- list.files(tmp_path_data) # relative path
 tmp_count <- 0
 ts_list = list() # init empty list for list of time series(xts)
@@ -84,6 +85,7 @@ for (tmp_filename in tmp_tmp_filenames){
   #  tmp_colnames <- c(tmp_colnames, tmp_comment_col)
   #}
   # read 'real' data
+  #
   tmp_data <- read_excel(tmp_path, # absolute path
                          na = c("NA", "<NA>"),
                          skip = 4,
@@ -96,6 +98,43 @@ for (tmp_filename in tmp_tmp_filenames){
   colnames(tmp_data) <- tmp_colnames
   # add tmp_data to ts_list with name tmp_varname
   
+  # delete observation count if contained in data
+  tmp_idx_col <- NULL
+  tmp_idx <-grep(x = colnames(tmp_data), pattern = "^Indikatoren für[[:alnum:]]*")
+  if(is.integer(tmp_idx)){ # is in col range and exists, tmp_idx %in% 1:ncol(tmp_data)
+    tmp_data <- tmp_data[, !colnames(tmp_data)[tmp_idx], with = FALSE]
+  }
+  # extract time index
+  # store time index in tmp_idx_col for use in xts later
+  tmp_colname <- grep(x = colnames(tmp_data), pattern = "^Jahr[[:alnum:]]*") # Jahr 200 -> IG-R-1 
+  if( length(tmp_colname) == 1){
+    tmp_colname <- colnames(tmp_data)[tmp_colname]
+    tmp_idx_col <- tmp_data[, tmp_colname, with = FALSE][[1]] # returns dataframe/table
+  } else {
+    tmp_cat <-  paste(names(tmp_data), 1:ncol(tmp_data), sep = ":", collapse = "\n")
+    cat(paste0("!!!!!!!! Warning. No 'Jahr' column detected for time index.!!!!!!!!\n", 
+                "Data contains the following colnames:\n",
+                tmp_cat), sep = "\n")
+    # store column name in tmp_colname and index data in tmp_idx_col
+    tmp_idx_col <- as.numeric((readline("Please enter appropriate column number:")))
+    tmp_colname <- colnames(tmp_data)[tmp_idx_col]
+    tmp_idx_col <- tmp_data[, tmp_colname, with = FALSE]
+  }
+  
+  # only preliminary data if date contains * at end => read as na
+  if( any(is.na(tmp_idx_col))){
+    tmp_data <- tmp_data[-which(is.na(tmp_idx_col)), ]
+    tmp_idx_col <- na.omit(tmp_idx_col) 
+  }
+  
+  # convert into date format
+  tmp_data <- tmp_data[, !tmp_colname, with = FALSE]
+  tmp_idx_col <- as.Date(ISOdate(tmp_idx_col, 1, 1)) # first day in jan
+  
+  # assign data
+  tmp_data <- xts(x = tmp_data, order.by = tmp_idx_col)
+  ts_list[[tmp_filename]] <- tmp_data
+  #ts_list.append(tmp_filename = tmp_data)
   # clean data
   # eg: BAU_I-5
   # ts_list = list("HandlungsfeldBauwesen" = list(
@@ -167,7 +206,7 @@ for (tmp_filename in tmp_tmp_filenames){
   #   tmp_data <- tmp_col_name[tmp_data, on = "col"]
   #   tmp_data <-  tmp_data[name != "Jahr"] # drop redundant/duplicate information
   #   tmp_data <-  dcast(tmp_data, formula = Jahr ~ name, value.var = "numeric")
-  assign(tmp_varname, tmp_data)
+  # assign(tmp_varname, tmp_data)
 }
 # remove tmp variables not used any more
 rm( list = ls()[grep(x = ls(), pattern = "^tmp")])
