@@ -4,6 +4,17 @@ Arbeit im Rahmen des Statistischen Praktikums an der LMU Muenchen
 <br />
 <br />
 
+## 2021-12-17
+### Sven
+- Spline Schätzung
+### Tim
+- preprocessing \{rightarrow} Anzahl Beobachtungen
+- preprocessing \{rightarrow} logarithmieren
+- preprocessing \{rightarrow} Outlier(-detection)
+### Chinjang
+- lineare und quadratische regression
+- plot der Zeitreihen
+<br>
 ## 2021-12-07 
 ### Aufgaben
 Idr. alles als generische Funktion die auf eine named list mit xts Objekten angewendet wird
