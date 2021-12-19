@@ -43,6 +43,7 @@
 source(paste0(dirname(rstudioapi::getSourceEditorContext()$path),
               .Platform$file.sep,
               "01_data_preprocessing.R"))
+################################################################################
 
 dat <- xts(x = `WW-I-10`[,3:ncol(`WW-I-10`)],
            order.by = as.Date(ISOdate(`WW-I-10`$Jahr, 1, 1)))
@@ -109,10 +110,39 @@ mk_test <- function(mult_ts){
 list_mk_test <- function(ts_list){
   ml_list <- list()
   for( idx in 1:length(ts_list)){ # for( (idx, object) in list) ??
-    print(idx)
+    #print(idx)
     ml_list[[names(ts_list)[idx]]] = mk_test(ts_list[[idx]])
   }
   ml_list
 }
 list_out <- list_mk_test(ts_list)
+###############################################################################
+#
+# Ljung Box Test H_{0}: independent
+#
+###############################################################################
+lb_test <- function(mult_ts){
+  lb_list <- list()
+  for( ts_idx in 1:ncol(mult_ts)){
+    ts_list[[colnames(mult_ts[, ts_idx])]] = Box.test(mult_ts[, ts_idx], lag = 3, type = "Ljung-Box")
+  }
+  lb_list
+}
+list_lb_test <- function(ts_list){
+  lb_list <- list()
+  for( idx in 1:length(ts_list)){
+    lb_list[[name(ts_list)[idx]]] = lb_test(ts_list[[idx]])
+  }
+  lb_list
+}
+
 ################################################################################
+#
+# Desc. plots
+#
+################################################################################
+library(ggplot)
+plot_ts <- function(mult_ts){
+  ggplot( data = mult_ts) +
+    geom_point(aes(x = index(mult_ts), y = value, colour = variable, group = variable))
+}

@@ -150,6 +150,11 @@
 
 48 Beobachtungen check
 
+# 1975 Elementarschäden 4.8, ansonsten meistens 0.x
+# Brand Lüneburger Heide ?
+# Überflutungen Rheinland-Pfalz
+
+
 ##############FiW-I-1_Daten_Schadenquote_Combined_Ratio_2019.xlsx#############
 
 42 Beobachtungen check
@@ -164,7 +169,11 @@
 
 ############################BAU-R-5_Daten_eEV.xlsx############################
 
-17 Beobachtungen check
+17 Beobachtungen check 
+
+# Letzte Beobachtung Datum mit * Zeichen
+#
+#
 
 ##################EW-I-2_Daten_Nichtverfuegbarkeit_2019.xlsx##################
 

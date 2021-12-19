@@ -9,24 +9,40 @@ output:
     latex_engine: xelatex
 ---
 
-# Datensatz
+# Datensatz und Aufgabenstellung
 
 ## Allgemeines
 
-- 50 Indikatoren
-- Trenschätzung (nichtparametrisch)
-- Trendtest 
+- Einlesen der Daten aus Excel files
+- automatisierte Verarbeitung
+- Zähldaten vs. Metrische Daten
+- Trendschätzung und Trendtest
 
 # Methoden
 
-## Trendschätzung
-- AR(p) Prozess
+## Trendschätzung Probleme
 - Extremwerte
+- Varianzstruktur
+- geringe Anzahl Beoachtungen
 
 ## Trendschätzung
-- Bayesian Splines
-- Homoskedastische Varianzstruktur
+- soll nicht paramtetisch sein
+- Bayesian Splines vorzuziehen wegen Varianzstruktur 
+- Siehe Kauermann et al.: Filtering Time Series with Penalized Splines
+- Alternativ Filtertechniken aus dem Bereich Signal Processing mit R packages (mFilter)
 
 ## Trendtest
 - Mann-Kendall Trendtest implementiert in package 'Kendall'
-- Verschiedene Signifikanzniveaus
+- Ausgabe: Kendalls rho und p-Value zu $H_{0}$:kein Trend
+
+## Unsere aktuellen Probleme
+- Zusammenfassen der Indikatoren (50 Stück mit meherern Zeitreihen)
+- Viele Möglichketen zur Trendschätzung, 
+- Mehrere R-packages wie 'forecast', und 'fpp3' um Trend zu filtern
+- Idee in den Packeten ist aber mehr Trend + Seasonale Komponente +Zyklischekomponente
+- Für uns mehr von Interesse: Trend + Extremwerkomponente + Zyklischekomponente
+- Siehe Kauermann et. al. 2011
+
+## Literatur
+- Kauermann, G., Krivobokova, T., Semmler, W. (2011) Filtering time series with penalized splines. Studies in Nonlinear Dynamics & Econometrics.
+- Mudelsee, M. (2013) Climate Time Series Analysis, Springer Verlag
