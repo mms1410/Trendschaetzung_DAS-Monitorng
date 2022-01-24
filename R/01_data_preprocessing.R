@@ -1,6 +1,10 @@
 # TODO:
-# Kommas einlesen
-
+# read in commas (german vs. international notation)
+# BAU-I-2 -> 'Datum letzter Tag' is redundant
+# FW-I-6 -> column name too long
+# BD-I-3 -> column name too long
+# FI-I-1
+# BAU-R-5 -> 3 observations only
 
 ## Preliminaries
 library(tidyverse)
