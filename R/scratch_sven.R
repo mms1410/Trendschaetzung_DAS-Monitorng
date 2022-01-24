@@ -1,148 +1,94 @@
-# # WW-I-10
-# tmp_data <- `WW-I-10`$`Cuxhaven (Nordsee) cm`
-# t <- as.numeric(index(tmp_data))
-# k <- floor(length(t) / 3)
-# model_gamm_WW_AR1 <- mgcv::gamm(formula = coredata(tmp_data) ~ s(t, k = k, bs = "cs"),
-#                                 correlation = corAR1())
-# 
-# 
-# # Sturm und Hagel
-# model_gamm_SuH <- gamlss::fitDist(ts_xts$`Sturm und Hagel`, type = "realline")
-# model_gamm_SuH_AR1 <- ""
-# 
-# t <- as.numeric(index(ts_xts$`Sturm und Hagel`))
-# k <- floor(length(t) / 3)
-# model_gamm_AR1 <- mgcv::gamm(formula = coredata(ts_xts$`Sturm und Hagel`) ~ s(t, k = k, bs = "cs" ),
-#                              correlation = corAR1())
-# 
-# title_gamm_SuH <- paste0(model_gamm_SuH$family, ", ")
-# trend_gamm_SuH <- ts_xts$`Sturm und Hagel` - model_gamm_SuH$residuals
-# res_gamm_SuH <- model_gamm_SuH$residuals
-# model_lm_SuH <- lm(formula = ts_xts$`Sturm und Hagel` ~ index(ts_xts))
-# trend_lm_SuH <- predict(model_lm)
-# res_lm_SuH <- model_lm_SuH$residuals
-# 
-# # Elementarschaeden
-# model_gamm_ES <- gamlss::fitDist(ts_xts$Elementarschaeden, type = "realline")
-# title_gamm_ES <- paste0(model_gamm_ES$family, ", ")
-# trend_gamm_ES <- ts_xts$Elementarschaeden - model_gamm_ES$residuals
-# res_gamm_ES <- model_gamm_ES$residuals
-# model_lm_ES <- lm(formula = ts_xts$Elementarschaeden ~ index(ts_xts))
-# trend_lm_ES <- predict(model_lm_ES)
-# 
-# ggplot(data = ts_xts$`Sturm und Hagel`) +
-#   geom_point(aes(x = idx, y = ts_xts$`Sturm und Hagel`)) +
-#   geom_line(aes(x = idx, y = trend_lm_SuH, color = "linearer Trend")) +
-#   geom_smooth(aes(x = idx, y = predict(model_gamm_SuH), color = "GAMM"))
-# 
-# ggplot(data = ts_xts$Elementarschaeden) +
-#   geom_point(aes(x = idx, y = ts_xts$Elementarschaeden)) +
-#   geom_line(aes(x = idx, y = trend_lm_ES, color = "linearer Trend")) +
-#   geom_smooth(aes())
+library(xts)
+library(data.table)
+library(ggplot2)
+library(checkmate)
+# source data
 ################################################################################
 source(paste0(dirname(rstudioapi::getSourceEditorContext()$path),
               .Platform$file.sep,
               "01_data_preprocessing.R"))
 ################################################################################
-
-dat <- xts(x = `WW-I-10`[,3:ncol(`WW-I-10`)],
-           order.by = as.Date(ISOdate(`WW-I-10`$Jahr, 1, 1)))
-
-library(mgcViz)
-colname <- "Cuxhaven (Nordsee) cm"
-for(colname in colnames(dat)){
-  ts <- subset(dat, ,colname)
-  t <- as.numeric(index(ts))
-  #t <- t + abs(min(t))
-  k <- floor(nrow(ts) / 3)
-  model_gamm_AR1 <- mgcv::gamm(formula = coredata(ts) ~ s(t, k = k, bs = "cs"),
-                              correlation = corAR1())
-  model_gamm_AR1_fitted <- fitted(model_gam_AR1$lme)
-  model_gamm_AR1$gam$data <- cbind(x = as.numeric(index(ts)),coredata(ts))
-  viz <- mgcViz::getViz(model_gamm_AR1$gam)
-  model_lm <- lm(formula = coredata(ts) ~ t)
-  model_evgam <- ecvgam::evgam()
-  
-  model_gamm__auto <- gamlss::fitDist(y = ts, type = "realplus")
-  model_gamm__auto
-  histDist(ts, family = model_gamm__auto$family[1], density = TRUE,
-           line.col =c(1,1), line.ty = c(1,2))^
-  plot(histDist(ts, family = model_gamm__auto$family[1], density = TRUE,
-                line.col =c(1,1), line.ty = c(1,2)))
-  wp(model_gamm__auto)
-  
-  m1 <- gamlss(ts~1, data = ts, family = model_gamm__auto$family[1], trace = FALSE)
-  summary(m1)
-  cat(paste0("The fitted distribution for the response variable is: ",
-             "Y_{i}$ ~ ", model_gamm__auto$family[1], "("))
-  
-  model_gamm__auto$coef.gamlss
-  model_gamm__auto$fits
-  
-  
-  ggplot(data = ts, aes(x = t)) +
-    geom_point(aes(y = coredata(ts)), alpha = 0.5, colour = "red", shape = 7) +
-    geom_line(aes(y = fitted(model_lm), color = "Linear Regression")) +
-    geom_point(aes(y = model_gamm_AR1$gam$fitted.values, colour = "GAM"), alpha = 0.9, shape = 25) +
-    theme_minimal() +
-    theme(text = element_text(size = 16, family = "Bookman")) +
-    labs(x = "Jahr [numeric]", y = colname, color = "")
-    
-  plot(viz, allTerms = TRUE) +
-    l_fitLine(linetype = 3)
-  
-}
+#TODO:
+# Kommas einleisen ?
 ################################################################################
+library(splines)
+#library(stringr)
 #
-# Man Kendall Test applied on list of (multivariate) time series
-#
-################################################################################
-library(Kendall)
-## for each multivariate time series ...
-mk_test <- function(mult_ts){
-  mk_list <- list()
-  for( ts_idx in 1:ncol(mult_ts)){
-    mk_list[[colnames(mult_ts[, ts_idx])]] = Kendall::MannKendall(mult_ts[, ts_idx])
-  }
-  mk_list
-}
-##  for each element in list of multivariate time series ...
-list_mk_test <- function(ts_list){
-  ml_list <- list()
-  for( idx in 1:length(ts_list)){ # for( (idx, object) in list) ??
-    #print(idx)
-    ml_list[[names(ts_list)[idx]]] = mk_test(ts_list[[idx]])
-  }
-  ml_list
-}
-list_out <- list_mk_test(ts_list)
-###############################################################################
-#
-# Ljung Box Test H_{0}: independent
-#
-###############################################################################
-lb_test <- function(mult_ts){
-  lb_list <- list()
-  for( ts_idx in 1:ncol(mult_ts)){
-    ts_list[[colnames(mult_ts[, ts_idx])]] = Box.test(mult_ts[, ts_idx], lag = 3, type = "Ljung-Box")
-  }
-  lb_list
-}
-list_lb_test <- function(ts_list){
-  lb_list <- list()
-  for( idx in 1:length(ts_list)){
-    lb_list[[name(ts_list)[idx]]] = lb_test(ts_list[[idx]])
-  }
-  lb_list
+data_name <- names(ts_list)[[51]]
+ts <- ts_list[[51]]
+# better names ? 
+cnames <- colnames(ts)
+## remove double whitespace
+## TODO: if only ONE time series intersection is whole column name
+cnames <- gsub("^ *|(?<= ) | *$", "", cnames, perl = TRUE) 
+colnames(ts) <- cnames
+## common elements
+title <- Reduce(intersect, strsplit(cnames," "))
+if (length(title) > 1 ){
+  short_names <- strsplit(cnames, " ")
+  ## not in common elements
+  short_names <- unlist(
+    lapply(X = short_names, FUN = function(name) {
+      out <- paste0(name[!name %in% title], collapse = " ")
+      ## check for "(" <something> ")" pattern
+      if (grepl(pattern = "^\\(.*\\)$", x = out)) {
+        substring(out, 2, nchar(out)-1)
+      } else {
+        out 
+      }
+    })
+  )
+  title <- paste0(title, collapse = " ")
+  colnames(ts) <- short_names
+} else {
+  short_names <- colnames(ts)
+  title <- data_name
 }
 
-################################################################################
 #
-# Desc. plots
-#
-################################################################################
-library(ggplot)
-plot_ts <- function(mult_ts){
-  ggplot( data = mult_ts) +
-    geom_point(aes(x = index(mult_ts), y = value, colour = variable, group = variable))
+splineNfit <- function(ts, N) {
+  # assert xts
+  out <- lm(coredata(ts) ~ bs(index(ts), df = N))$fitted.values
+  xts(x = out, order.by = as.Date(names(out)))
 }
+## create time series of fitted values
+bs3_fit <- apply(X = ts, MARGIN = 2, FUN = function(x) {splineNfit(x, 3)}) 
+if ("matrix" %in% class(bs3_fit)) { # multiple classes possible
+  bs3_fit <- xts(x = bs3_fit, order.by = index(ts))
+} else if ("list" %in% class(bs3_fit)){
+  ## merge time series into one multiple time series
+  bs3_fit <- do.call(xts::merge.xts, bs3_fit) #  make xts series
+}
+colnames(bs3_fit) <- paste0("Spline_3_", colnames(ts))
+assert(length(ts) == length(bs3_fit))
+ts_all <- do.call(xts::merge.xts, list(ts, bs3_fit)) #  replaces whitespace with "."
+colnames(ts_all) <- gsub(x = colnames(ts_all), pattern = "\\.", replacement = " ")
+## setup data table for ggplot
+dtbl <- as.data.table(ts_all)
+variable_names <- colnames(dtbl)
+variable_names <- variable_names[variable_names != "index"]
+##  number of models + 1
+n_models <- 2
+## ggplot needs data in long format and not typical wide format
+ts_long <- melt(data = dtbl, id.vars = "index", value.name = "val",
+                variable.name = "var")
+## assign colors to variables is ts_long
+ggcolors <- scales::hue_pal()(ncol(ts))
+ggcolors_original <- ggcolors
+ggcolors <- rep(ggcolors, 2) # first original data point, second spline fit
+names(ggcolors) <- variable_names
+names(ggcolors_original) <- short_names
+## create ggplot
+ggplot() +
+  geom_line(data = ts_long[grepl(pattern = "^Spline_[[:alnum:]]*", var,
+                                 perl = TRUE)],
+            aes(x = index, y = val, color = var)) +
+  geom_point(data = ts_long[!ts_long[grepl(pattern = "^Spline_[[:alnum:]]*", var,
+                                           perl = TRUE)], on = c("index", "var")],
+             aes(x = index, y = val, color = var)) +
+  scale_color_manual(values = ggcolors, labels = names(ggcolors)) +
+  guides(color = guide_legend(nrow = length(short_names),
+                              title = "Daten")) +
+  xlab("Jahr") +
+  ylab(title) +
+  ggtitle(title)

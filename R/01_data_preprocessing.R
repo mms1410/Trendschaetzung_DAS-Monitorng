@@ -1,3 +1,7 @@
+# TODO:
+# Kommas einlesen
+
+
 ## Preliminaries
 library(tidyverse)
 library(readxl)
@@ -14,13 +18,13 @@ tmp_count <- 0
 ts_list = list() # init empty list for list of time series(xts)
 for (tmp_filename in tmp_tmp_filenames){
   tmp_count <- tmp_count + 1
-  #tmp_filename <- tmp_tmp_filenames[1]
+  #tmp_filename <- tmp_tmp_filenames[17]
   # create data reference
   # assumes data name of form '<alnum>_Daten<alnum>'
   # variable with name of <alnum> string preceding '_Daten' string will be created
   tmp_pattern <- tmp_pattern <- "(?:(?!_Daten).)*" # neg look ahead needed
   tmp_varname <- regmatches(tmp_filename, gregexpr(pattern = tmp_pattern,
-                                                tmp_filename, perl = TRUE))[[1]][1]
+                                                   tmp_filename, perl = TRUE))[[1]][1]
   tmp_path <- paste0(tmp_path_data,.Platform$file.sep, tmp_filename)
   ##############################################################################
   ############################### sheet name ###################################
@@ -31,7 +35,7 @@ for (tmp_filename in tmp_tmp_filenames){
     # any occurrence of 'i|Indikator' ? 
     tmp_len <- length(tmp_sheetname[grep(x = tmp_sheetname, pattern = "[[:alnum:]]*[I|i]ndikator[[:alnum:]]*")])
     if( tmp_len > 0){
-
+      
       tmp_len <- length(tmp_sheetname[grep(x = tmp_sheetname, pattern = "Indikator_Proxy")])
       if( length(tmp_len) == 1){
         tmp_sheetname <- "Indikator_Proxy"
@@ -44,7 +48,7 @@ for (tmp_filename in tmp_tmp_filenames){
                 tmp_varname, " could be detected !!!"))
     }
   }else{
-   # Indikator sheet exists
+    # Indikator sheet exists
     tmp_sheetname <- "Indikator"
   }
   ##############################################################################
@@ -76,8 +80,8 @@ for (tmp_filename in tmp_tmp_filenames){
   # if first row contains only NA, the column names must be adjusted
   if(!all(is.na(tmp_data[,1]))){
     tmp_spreadsheet_title <- read_excel(path = tmp_path,
-                                      sheet = tmp_sheetname,
-                                      col_names = FALSE)
+                                        sheet = tmp_sheetname,
+                                        col_names = FALSE)
     tmp_spreadsheet_title <- as.character(tmp_spreadsheet_title[1,1])
     tmp_colnames <- c(tmp_spreadsheet_title, tmp_colnames)
   }
@@ -113,8 +117,8 @@ for (tmp_filename in tmp_tmp_filenames){
   } else {
     tmp_cat <-  paste(names(tmp_data), 1:ncol(tmp_data), sep = ":", collapse = "\n")
     cat(paste0("!!!!!!!! Warning. No 'Jahr' column detected for time index.!!!!!!!!\n", 
-                "Data contains the following colnames:\n",
-                tmp_cat), sep = "\n")
+               "Data contains the following colnames:\n",
+               tmp_cat), sep = "\n")
     # store column name in tmp_colname and index data in tmp_idx_col
     tmp_idx_col <- as.numeric((readline("Please enter appropriate column number:")))
     tmp_colname <- colnames(tmp_data)[tmp_idx_col]
@@ -133,6 +137,9 @@ for (tmp_filename in tmp_tmp_filenames){
   
   # assign data
   tmp_data <- xts(x = tmp_data, order.by = tmp_idx_col)
+  
+  # NA only columns
+  tmp_data <- tmp_data[rowSums(is.na(tmp_data)) != ncol(tmp_data), ]
   ts_list[[tmp_filename]] <- tmp_data
   #ts_list.append(tmp_filename = tmp_data)
   # clean data
