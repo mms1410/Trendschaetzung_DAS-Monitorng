@@ -14,8 +14,8 @@ source(paste0(dirname(rstudioapi::getSourceEditorContext()$path),
 library(splines)
 #library(stringr)
 #
-data_name <- names(ts_list)[[51]]
-ts <- ts_list[[51]]
+data_name <- names(ts_list)[[47]]
+ts <- ts_list[[47]]
 # better names ? 
 cnames <- colnames(ts)
 ## remove double whitespace
@@ -72,10 +72,10 @@ n_models <- 2
 ## ggplot needs data in long format and not typical wide format
 ts_long <- melt(data = dtbl, id.vars = "index", value.name = "val",
                 variable.name = "var")
-## assign colors to variables is ts_long
+## assign colors to variables in ts_long
 ggcolors <- scales::hue_pal()(ncol(ts))
 ggcolors_original <- ggcolors
-ggcolors <- rep(ggcolors, 2) # first original data point, second spline fit
+ggcolors <- rep(ggcolors, n_models) # first original data point, second spline fit
 names(ggcolors) <- variable_names
 names(ggcolors_original) <- short_names
 ## create ggplot
@@ -91,4 +91,60 @@ ggplot() +
                               title = "Daten")) +
   xlab("Jahr") +
   ylab(title) +
-  ggtitle(title)
+  ggtitle(title) +
+  theme_bw() +
+  theme(panel.border = element_blank(), axis.line = element_line(colour = "black"))
+################################################################################
+# TODO: 
+# - no double looping
+#
+spline_models <- function(ts_flat, deg = 3) {
+  #
+  #
+  #
+  lapply(
+    X = ts_flat,
+    FUN = function(ts) {
+      mgcv::gam(
+        formula = coredata(ts) ~ s(x = index(ts), m = l, k = 20),
+        method = 
+      )
+    }
+  )
+}
+
+flatten_ts_list <- function(ts_list) {
+  #
+  # -> moved into 01_data_preprocessing
+  #
+  names_list <- names(ts_list)
+  res <- list()
+  for (xts_idx in seq(ts_list)) {
+    ts <- ts_list[[xts_idx]]
+    for(ts_idx in seq(ncol(ts))) {
+      long_name <- names_list[xts_idx]
+      long_name <- paste(long_name,
+                         names(ts)[ts_idx],
+                         sep = "__",
+                         collapse = "")
+      res[[long_name]] <- ts[, ts_idx]
+    }
+  }
+  res
+}
+# dito
+# ts_flat <- flatten_ts_list(ts_list)
+short_long_filter_list <- function(ts_flat, n_short) {
+  #
+  #
+  #
+  idx <- lapply(X = ts_flat, nrow) 
+  idx <- unlist(unname(idx))
+  ts_long <- ts_flat[idx > n_short]
+  ts_short <- ts_flat[idx <= n_short]
+  list("ts_long" = ts_long,
+       "ts_short" = ts_short)
+}
+short_long_ts <- short_long_filter_list(ts_flat, 16)
+ts_short <- short_long_ts[["ts_short"]]
+ts_long <- short_long_ts[["ts_long"]]
