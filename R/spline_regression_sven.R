@@ -8,9 +8,9 @@ source(paste0(dirname(rstudioapi::getSourceEditorContext()$path),
               .Platform$file.sep,
               "01_data_preprocessing.R"))
 ################################################################################
-
-################################################################################
 library(splines)
+################################################################################
+# plot for each index group (e.g. spreadsheet)
 make_plot <- function(ts, data_name) {
   # better names ? 
   cnames <- colnames(ts)
@@ -94,3 +94,4 @@ make_plot <- function(ts, data_name) {
 n <- 51
 make_plot(ts_list[[n]], names(ts_list[[n]]))
 # 3, 4, 5, 6, 8, 11, 12, 13, 20, 24, 26, 29, 34, 35, 36, 44, 50, 51
+################################################################################

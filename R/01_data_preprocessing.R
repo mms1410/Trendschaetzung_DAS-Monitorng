@@ -219,5 +219,31 @@ for (tmp_filename in tmp_tmp_filenames){
   #   tmp_data <-  dcast(tmp_data, formula = Jahr ~ name, value.var = "numeric")
   # assign(tmp_varname, tmp_data)
 }
+################################################################################
+flatten_ts_list <- function(ts_list) {
+  #
+  #
+  #
+  names_list <- names(ts_list)
+  res <- list()
+  for (xts_idx in seq(ts_list)) {
+    ts <- ts_list[[xts_idx]]
+    for(ts_idx in seq(ncol(ts))) {
+      long_name <- names_list[xts_idx]
+      long_name <- paste(long_name,
+                         names(ts)[ts_idx],
+                         sep = "__",
+                         collapse = "")
+      res[[long_name]] <- ts[, ts_idx]
+    }
+  }
+  res
+}
+ts_flat <- flatten_ts_list(ts_list)
 # remove tmp variables not used any more
 rm( list = ls()[grep(x = ls(), pattern = "^tmp")])
+##
+defaut_theme <- theme_minimal() +
+  theme(text = element_text(family = "Bookman", size = 15)) +
+  theme(panel.grid.major = element_line(color = "grey", size = 0.3)) +
+  theme(axis.line = element_line(colour = "black", size = 0.4))

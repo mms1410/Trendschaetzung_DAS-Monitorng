@@ -8,6 +8,13 @@ source(paste0(dirname(rstudioapi::getSourceEditorContext()$path),
               .Platform$file.sep,
               "01_data_preprocessing.R"))
 ################################################################################
+default_theme <- theme_minimal() +
+  theme(text = element_text(family = "Bookman", size = 15)) +
+  theme(panel.grid.major = element_line(color = "grey", size = 0.3)) +
+  theme(axis.line = element_line(colour = "black", size = 0.4))
+
+
+################################################################################
 #TODO:
 # Kommas einleisen ?
 ################################################################################
@@ -95,44 +102,7 @@ ggplot() +
   theme_bw() +
   theme(panel.border = element_blank(), axis.line = element_line(colour = "black"))
 ################################################################################
-# TODO: 
-# - no double looping
 #
-spline_models <- function(ts_flat, deg = 3) {
-  #
-  #
-  #
-  lapply(
-    X = ts_flat,
-    FUN = function(ts) {
-      mgcv::gam(
-        formula = coredata(ts) ~ s(x = index(ts), m = l, k = 20),
-        method = 
-      )
-    }
-  )
-}
-
-flatten_ts_list <- function(ts_list) {
-  #
-  # -> moved into 01_data_preprocessing
-  #
-  names_list <- names(ts_list)
-  res <- list()
-  for (xts_idx in seq(ts_list)) {
-    ts <- ts_list[[xts_idx]]
-    for(ts_idx in seq(ncol(ts))) {
-      long_name <- names_list[xts_idx]
-      long_name <- paste(long_name,
-                         names(ts)[ts_idx],
-                         sep = "__",
-                         collapse = "")
-      res[[long_name]] <- ts[, ts_idx]
-    }
-  }
-  res
-}
-# dito
 # ts_flat <- flatten_ts_list(ts_list)
 short_long_filter_list <- function(ts_flat, n_short) {
   #
@@ -148,3 +118,166 @@ short_long_filter_list <- function(ts_flat, n_short) {
 short_long_ts <- short_long_filter_list(ts_flat, 16)
 ts_short <- short_long_ts[["ts_short"]]
 ts_long <- short_long_ts[["ts_long"]]
+################################################################################
+ts <- ts_flat[[7]]
+
+# create spline objects
+pspline::
+# 15 März Sevag -> 
+# 14  
+
+model_autoarima <- forecast::
+ggplot(data = ts) +
+  geom_point(mapping = aes(x = index(ts), y = coredata(ts))) +
+  geom_spline(mapping = aes(x = index(ts),
+                            y = coredata(ts)))
+
+####
+
+
+
+
+x <- fortify.zoo(ts)
+
+base::plot(ts)
+ts.spl <- smooth.spline(x = index(ts), y = coredata(ts))
+lines(ts.spl, col = "blue")
+
+ggplot(data = fortify.zoo(ts)) +
+  geom_point(mapping = aes(x = index(ts), y = coredata(ts))) +
+  geom_smooth(method = lm,
+              formula = coredata(ts) ~ splines::bs(index(ts), 3),
+              se = FALSE)
+
+
+
+dtbl <- as.data.table(ts)
+dtbl[, !"index", with = FALSE]
+colnames(dtbl)[2]
+
+library(ggformula)
+dtbl[,1]
+ggplot(data = dtbl) +
+  geom_point(mapping = aes(x = dtbl[, "index", with = FALSE],
+                           y = dtbl[, !"index", with = FALSE]))
+
+
+fit_polyspline <- lm(coredata(ts) ~ poly(index(ts)))
+fit_sspline <- smooth.spline(coredata(ts) ~ poly(index(ts)))
+mgcv::gam(coredata(ts) ~ s(index(ts), bs = "ps", ))
+################################################################################
+## time series splits
+tp <- lapply(X = ts_flat, FUN = length)
+tp <- unlist(tp)
+tp <- sort(tp)
+
+quantile(tp)[2]
+quantile(tp)[3]
+quantile(tp)[4]
+
+ggplot() +
+  stat_ecdf(aes(unname(tp)),geom = "step") +
+  geom_vline(xintercept = quantile(tp)[2], color = "red", linetype = 2) +
+  geom_text(aes(x = quantile(tp)[2]),
+            label = paste("0.25 Quantil (", quantile(tp)[2], ")",
+                          collapse = "",
+                          sep = ""),
+            y = 0.6,
+            angle = 90, vjust = -1, color = "red") +
+  geom_vline(xintercept = quantile(tp)[3], color = "red", linetype = 2) +
+  geom_text(aes(x = quantile(tp)[3]),
+            label = paste("0.5 Quantil (", quantile(tp)[3], ")",
+            collapse = "",
+            sep = ""),
+            y = 0.6,
+              angle = 90, vjust = -1, color = "red") +
+  geom_vline(xintercept = quantile(tp)[4], color = "red", linetype = 2) +
+  geom_text(aes(x = quantile(tp)[4]),
+            label = paste("0.75 Quantil (", quantile(tp)[4], ")",
+                          collapse = "",
+                          sep = ""),
+            y = 0.6,
+            angle = 90, vjust = -1, color = "red") +
+  ggtitle(label = "Empirische Verteilngsfunktion der Zeitreihenlänge aller Indizes") +
+  xlab("Zeitreihenlänge") +
+  ylab("Kummulierte rel. Häufigkeit") +
+  defaut_theme
+
+
+
+ts_flat_1 <- Filter(function(ts) {
+  length(ts) <= quantile(tp)[1]
+  }, ts_flat)
+ts_flat_2 <- Filter(function(ts) {
+  (length(ts) > quantile(tp)[1]) && (length(ts) <= quantile(tp)[2])
+  }, ts_flat)
+ts_flat_3 <- Filter(function(ts) {
+  (length(ts) > quantile(tp)[2]) && (length(ts) <= quantile(tp)[3])
+  }, ts_flat)
+ts_flat_4 <- Filter(function(ts) {
+  length(ts) > quantile(tp)[3]
+  }, ts_flat)
+################################################################################
+
+fit <- gamlss::fitDist(ts, type = "realplus")
+fit$failed
+fit$family[[1]]
+m1 <- gamlss::gamlssML(ts, family = fit$family[[1]])
+chooseDist(m1, type = "realplus")
+
+m1 <- gamlss::gamlss(coredata(ts) ~ pb(as.numeric(index(ts))), family = fit$family[[1]])
+summary(m1)
+plot(m1)
+wp(m1)
+plot(coredata(ts) ~ index(ts))
+lines(fitted(m1) ~ index(ts))
+
+min(unlist(lapply(X = ts_flat_4, FUN = function(ts) {
+  length(ts)
+})))
+
+
+model <- mgcv::gam(coredata(ts) ~ s(as.numeric(index(ts))))
+
+df <- 1
+title <- names(ts)
+qq <- quantile(as.numeric(index(ts)), seq(0,1, length.out = 10))
+model_smooth <- smooth.spline(coredata(ts) ~ as.numeric(index(ts)),
+                              cv = TRUE)
+model_cubic <- lm(formula = coredata(ts) ~ poly(as.numeric(ts),
+                                                degree = 3,
+                                                raw = 3))
+model_bspline <- lm(formula = coredata(ts) ~ bs(as.numeric(index(ts))))
+model_cc <- mgcv::gamm(formula = coredata(ts) ~ s(as.numeric(index(ts)),
+                                                  bs = "cc",
+                                                  k = qq
+                                                  ))
+
+ggplot() +
+  geom_point(aes(x = index(ts), y = coredata(ts))) +
+  geom_line(aes(x = index(ts),
+                y = predict(model_smooth, as.numeric(index(ts)))$y,
+                color = "smoothing spline")) +
+  geom_line(aes(x = index(ts),
+                y = predict(model_cubic, x = as.numeric(index(ts))),
+                color = "cubic spline")) +
+  geom_line(aes(x = index(ts),
+                y = predict(model_bspline, x = as.numeric(index(ts))),
+                color = "B-Spline")) +
+  xlab("Zeit") +
+  ylab("Index") +
+  guides(color = guide_legend(title = "Legende")) +
+  ggtitle(title)+
+  
+  default_theme
+
+################################################################################
+library(fpp2)
+model_ar1 <- Arima(ts, order = c(1, 0, 0))
+forecast(ts, h = length(ts)) %>% 
+  autoplot()
+
+library(anomaly)
+anomaly <- capa.uv(ts)
+plot(anomaly)
+anomaly

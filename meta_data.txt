@@ -17,6 +17,7 @@
 ##############BD-I-3_Daten_Rueckgewinnung_Ueberflutung_2019.xlsx##############
 
 18 Beobachtungen check
+# Mega langer Spaltenname
 
 ###############TOU-I-6_Daten_Saisonale_Uebernachtungszahlen.xlsx##############
 
@@ -77,6 +78,7 @@
 #############FW-I-6_Daten_Waldbrand_Waldbrandgefaehrdung_2019.xlsx############
 
 41 Boebachtungen check
+# Mega langer Spaltenname
 
 ####################EW-I-1_Daten_Unterbrechungen_2019.xlsx####################
 
@@ -93,10 +95,12 @@
 ####################BAU-R-3_Daten_Foerderung_kfw_2019.xlsx####################
 
 12 Beobachtungen check
+#  Kommas nicht einheitlich
 
 #######################BO-I-X_Daten_Bodentemperatur.xlsx######################
 
 67 Beobachtungen FAIL (63)
+# (konstante) Mittelwert Zeitreihe
 
 #################TOU-I-7_Daten_Praeferenz_Reiseziele_2019.xlsx################
 
@@ -137,6 +141,7 @@
 ###################FI-I-1_Daten_lusitanische_Arten_2019.xlsx##################
 
 31 Beobachtungen check
+# extra check
 
 ####################BAU-I-1_Daten_Waermebelastung_2019.xlsx###################
 
@@ -166,13 +171,14 @@
 ######################BAU-I-2_Daten_Waermeinsel_2019.xlsx#####################
 
 43 Beobachtungen check
+# 'Datum letzter Tag' überflüssig
 
 ############################BAU-R-5_Daten_eEV.xlsx############################
 
 17 Beobachtungen check 
 
 # Letzte Beobachtung Datum mit * Zeichen
-#
+# eine Zeitreihe hat nur 3 Beobachtungen
 #
 
 ##################EW-I-2_Daten_Nichtverfuegbarkeit_2019.xlsx##################
