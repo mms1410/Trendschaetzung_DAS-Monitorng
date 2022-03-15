@@ -1,16 +1,12 @@
-library(xts)
-library(data.table)
-library(ggplot2)
-library(checkmate)
 # source data
 ################################################################################
 source(paste0(dirname(rstudioapi::getSourceEditorContext()$path),
               .Platform$file.sep,
               "01_data_preprocessing.R"))
 ################################################################################
-library(splines)
 ################################################################################
 # plot for each index group (e.g. spreadsheet)
+# function not used anymore
 make_plot <- function(ts, data_name) {
   # better names ? 
   cnames <- colnames(ts)
@@ -95,3 +91,77 @@ n <- 51
 make_plot(ts_list[[n]], names(ts_list[[n]]))
 # 3, 4, 5, 6, 8, 11, 12, 13, 20, 24, 26, 29, 34, 35, 36, 44, 50, 51
 ################################################################################
+fit_models <- function(ts, span = 0.5, ar = 1, title = NULL) {
+  ## set up params
+  ts <- na.omit(ts)
+  if (is.null(title)) {
+    title <- names(ts)
+  }
+  ## set up models
+  model_pspline <- gamlss::gamlss(coredata(ts) ~ ps(num_index(ts)))
+  model_ar <- arima(ts, order = c(ar, 0, 0))
+  model_loess <- loess(formula = coredata(ts) ~ num_index(ts),
+                       span = span)
+ list(model_pspline = model_pspline,
+      model_ar = model_ar,
+      model_loess = model_loess) 
+}
+model <- fit_models(ts_flat_1[[1]])
+
+
+
+plot_splines <- function(ts, span = 0.5, ar = 1,
+                         title = NULL,
+                         x_lab = "Zeit",
+                         y_lab = "Indexwert",
+                         legend = "Legende") {
+  ## set up params
+  if (is.null(title)) {
+    title <- names(ts)
+  }
+  idx_seq <- seq(from = min(index(ts)), to = max(index(ts)), by = "day")
+  ## set up models
+  model_pspline <- gamlss::gamlss(coredata(ts) ~ ps(as.numeric(index(ts))))
+  model_loess <- loess(formula = coredata(ts) ~ as.numeric(index(ts)),
+                       span = span)
+  #model_loess <- gamlss::lo(formula = coredata(ts) ~ index(ts))
+  model_arima <- forecast::Arima(ts, order = c(ar, 0, 0))
+  
+  ## plot fitted values
+  ggplot() +
+    geom_point(aes(x = index(ts), y = coredata(ts))) +
+    geom_line(aes(x = index(ts), y = fitted(model_pspline),
+                  color = "P-Spline")) +
+    geom_point(aes(x = index(ts), y = fitted(model_pspline),
+                   color = "P-Spline"), shape = 5) +
+    geom_line(aes(x = index(ts), y = fitted(model_loess),
+                  color = paste0("LOESS [span=", span, "]"))) +
+    geom_point(aes(x = index(ts), y = fitted(model_loess),
+              color = paste0("LOESS [span=", round(span,2), "]")), shape = 6) +
+    geom_line(aes(x = index(ts), y = fitted(model_arima),
+                  color = paste0("AR(", ar, ")"))) +
+    geom_point(aes(x = index(ts), y = fitted(model_arima),
+                   color = paste0("AR(", ar, ")")), shape = 2) +
+    #geom_smooth(aes(x = index(ts), y = coredata(ts),
+    #                color = "LOESS Regression"), se = FALSE) +
+    xlab(x_lab) +
+    ylab(y_lab) +
+    ggtitle(title)+
+    guides(colour = guide_legend(title = legend)) +
+    default_theme
+}
+####
+ts <- ts_flat_2[[7]]
+
+
+p1 <- plot_splines(ts = ts,span = span, ar = ar, title = "")
+p2 <- plot_splines(ts = log(ts), span = span, ar = ar, title = "",
+                   y_lab = "Indexwert \n logarithmiert")
+
+combo_plot(p1, p2, names(ts))
+
+combo_plot <- function(p1, p2, title){
+  p <- p1 / p2 & theme(legend.position = "right")
+  p + plot_layout(guides = "collect") +
+    plot_annotation(title) & default_theme
+}

@@ -103,7 +103,7 @@ ggplot() +
   theme(panel.border = element_blank(), axis.line = element_line(colour = "black"))
 ################################################################################
 #
-# ts_flat <- flatten_ts_list(ts_list)
+ts_flat <- flatten_ts_list(ts_list)
 short_long_filter_list <- function(ts_flat, n_short) {
   #
   #
@@ -281,3 +281,20 @@ library(anomaly)
 anomaly <- capa.uv(ts)
 plot(anomaly)
 anomaly
+
+#######################################################################
+ts <- ts_flat_4[[2]]
+lireg <- function(ts) {
+  ts <- na.omit(ts)
+  idx_squared <- as.numeric(index(ts)) ^2
+  model_linear <- lm(formula = coredata(ts) ~ as.numeric(index((ts))))
+  model_quadratic <- lm(formula = coredata(ts) ~ idx_squared)
+  ggplot() +
+    geom_point(aes(x = index(ts), y = coredata(ts))) +
+    geom_line(aes(x = index(ts), y = fitted(model_linear),
+                  color = "linear")) +
+    geom_line(aes(x = index(ts), y = fitted(model_quadratic),
+                  color = "quadratic"))
+  
+}
+lireg(ts)

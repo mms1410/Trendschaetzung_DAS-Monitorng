@@ -6,14 +6,13 @@
 # FI-I-1
 # BAU-R-5 -> 3 observations only
 
-## Preliminaries
 library(tidyverse)
 library(readxl)
 library(data.table)
 library(xts)
-### below for other approach
-#library(tidyxl)
+
 ## Read data and create data variables
+## go to data folder
 tmp_path_data <- dirname(rstudioapi::getSourceEditorContext()$path)
 tmp_path_data <- dirname(tmp_path_data) # folder down from 'R' folder
 tmp_path_data <- paste0(tmp_path_data, .Platform$file.sep, "data") # folder up to 'data' folder 
@@ -222,8 +221,6 @@ for (tmp_filename in tmp_tmp_filenames){
 ################################################################################
 flatten_ts_list <- function(ts_list) {
   #
-  #
-  #
   names_list <- names(ts_list)
   res <- list()
   for (xts_idx in seq(ts_list)) {
@@ -240,10 +237,17 @@ flatten_ts_list <- function(ts_list) {
   res
 }
 ts_flat <- flatten_ts_list(ts_list)
+################################################################################
+# used only once at project beginning to create metadata file
+# see metadata file in project folder
+# tmp_splitnames <- strsplit(names(ts_flat), split = ".xlsx__")
+# metadata <- as.data.table(cbind(
+#   spreadsheet = sapply(tmp_splitnames, "[[", 1),  # spreadsheet
+#   datacol = sapply(tmp_splitnames, "[[", 2)  # data column
+# ))
+# fwrite(metadata,
+#        paste0(dirname(tmp_path_data), .Platform$file.sep, "metadata.csv")
+#        )
+################################################################################
 # remove tmp variables not used any more
 rm( list = ls()[grep(x = ls(), pattern = "^tmp")])
-##
-defaut_theme <- theme_minimal() +
-  theme(text = element_text(family = "Bookman", size = 15)) +
-  theme(panel.grid.major = element_line(color = "grey", size = 0.3)) +
-  theme(axis.line = element_line(colour = "black", size = 0.4))

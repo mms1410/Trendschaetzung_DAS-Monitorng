@@ -1,4 +1,7 @@
-library(ggplot2)
+################################################################################
+# source(paste0(dirname(rstudioapi::getSourceEditorContext()$path),
+# .Platform$file.sep,
+# "01_data_preprocessing.R"))
 ################################################################################
 tp <- lapply(X = ts_flat, FUN = length)
 tp <- unlist(tp)
@@ -12,21 +15,21 @@ ggplot() +
   stat_ecdf(aes(unname(tp)),geom = "step") +
   geom_vline(xintercept = quantile(tp)[2], color = "red", linetype = 2) +
   geom_text(aes(x = quantile(tp)[2]),
-            label = paste("0.25 Quantil (", quantile(tp)[2], ")",
+            label = paste("0.25 Quantil (n=", quantile(tp)[2], ")",
                           collapse = "",
                           sep = ""),
             y = 0.6,
             angle = 90, vjust = -1, color = "red") +
   geom_vline(xintercept = quantile(tp)[3], color = "red", linetype = 2) +
   geom_text(aes(x = quantile(tp)[3]),
-            label = paste("0.5 Quantil (", quantile(tp)[3], ")",
+            label = paste("0.5 Quantil (n=", quantile(tp)[3], ")",
                           collapse = "",
                           sep = ""),
             y = 0.6,
             angle = 90, vjust = -1, color = "red") +
   geom_vline(xintercept = quantile(tp)[4], color = "red", linetype = 2) +
   geom_text(aes(x = quantile(tp)[4]),
-            label = paste("0.75 Quantil (", quantile(tp)[4], ")",
+            label = paste("0.75 Quantil (n=", quantile(tp)[4], ")",
                           collapse = "",
                           sep = ""),
             y = 0.6,
@@ -34,7 +37,7 @@ ggplot() +
   ggtitle(label = "Empirische Verteilungsfunktion der Zeitreihenlänge aller Indizes") +
   xlab("Zeitreihenlänge") +
   ylab("Kummulierte rel. Häufigkeit") +
-  defaut_theme
+  default_theme
 
 ts_flat_1 <- Filter(function(ts) {
   length(ts) <= quantile(tp)[1]
